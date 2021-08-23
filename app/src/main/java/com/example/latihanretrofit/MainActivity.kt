@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
                         if (response.body() != null) {
 //                            response.body()?.let { adapterMain.setData(it) }
-                            adapterMain.setData(response.body()!!)
+                            adapterMain.setData(listOf(response.body()!!))
                             setupRecycler()
                         }
 

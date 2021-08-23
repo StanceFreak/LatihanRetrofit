@@ -52,8 +52,8 @@ class MainAdapter(val context: Context): RecyclerView.Adapter<MainAdapter.HomeVi
         return data.size
     }
 
-    fun setData(bookList: BookItem) {
-        data = listOf(bookList)
+    fun setData(bookList: List<BookItem>) {
+        data = bookList
         notifyDataSetChanged()
     }
 
