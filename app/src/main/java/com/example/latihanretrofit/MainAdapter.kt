@@ -10,11 +10,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.latihanretrofit.Model.BookItem
-import com.squareup.picasso.Picasso
+import com.example.latihanretrofit.Model.Item
 
 class MainAdapter(val context: Context): RecyclerView.Adapter<MainAdapter.HomeViewHolder>() {
 
-    private var data : List<BookItem> = listOf()
+    private var data : List<Item> = listOf()
 
     inner class HomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var image: ImageView
@@ -40,19 +40,19 @@ class MainAdapter(val context: Context): RecyclerView.Adapter<MainAdapter.HomeVi
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         val bookData = data[position]
         Glide.with(context)
-            .load(bookData.imageLinks.thumbnail)
+            .load(bookData.volumeInfo.imageLinks.thumbnail)
             .into(holder.image)
-        holder.title.text = bookData.title
-        holder.author.text = bookData.authors.toString()
-        holder.rating.rating = bookData.averageRating.toFloat()
-        holder.price.text = bookData.retailPrice.amount.toString()
+        holder.title.text = bookData.volumeInfo.title
+        holder.author.text = bookData.volumeInfo.authors.toString()
+        holder.rating.rating = bookData.volumeInfo.averageRating.toFloat()
+        holder.price.text = bookData.saleInfo.retailPrice.amount.toString()
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
 
-    fun setData(bookList: List<BookItem>) {
+    fun setData(bookList: List<Item>) {
         data = bookList
         notifyDataSetChanged()
     }
