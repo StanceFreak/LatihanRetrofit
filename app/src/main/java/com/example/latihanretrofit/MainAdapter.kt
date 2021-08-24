@@ -14,7 +14,7 @@ import com.example.latihanretrofit.Model.Item
 
 class MainAdapter(val context: Context): RecyclerView.Adapter<MainAdapter.HomeViewHolder>() {
 
-    private var data : List<Item> = listOf()
+    private var data = emptyList<Item>()
 
     inner class HomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var image: ImageView
@@ -45,7 +45,7 @@ class MainAdapter(val context: Context): RecyclerView.Adapter<MainAdapter.HomeVi
         holder.title.text = bookData.volumeInfo.title
         holder.author.text = bookData.volumeInfo.authors.toString()
         holder.rating.rating = bookData.volumeInfo.averageRating.toFloat()
-        holder.price.text = bookData.saleInfo.retailPrice.amount.toString()
+        holder.price.text = String.format("Rp %,d", bookData.saleInfo.retailPrice.amount)
     }
 
     override fun getItemCount(): Int {

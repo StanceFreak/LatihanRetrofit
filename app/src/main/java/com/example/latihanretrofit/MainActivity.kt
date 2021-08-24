@@ -29,11 +29,11 @@ class MainActivity : AppCompatActivity() {
 
         adapterMain = MainAdapter(this)
         recyclerView = findViewById(R.id.rv_retrofit)
-        manager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
         recyclerView.apply {
+            manager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
             layoutManager = manager
             adapter = adapterMain
-            setHasFixedSize(true)
         }
         JSONResponse()
     }
@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
                         if (response.body() != null) {
                             Log.d("test", response.body()!!.toString())
+//                            val adapterMain = MainAdapter(this@MainActivity)
                             adapterMain.setData(response.body()!!.items)
 //                            setupRecycler()
                         }
@@ -60,9 +61,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecycler() {
-        adapterMain = MainAdapter(this)
-        recyclerView = findViewById(R.id.rv_retrofit)
-        manager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val adapterMain = MainAdapter(this)
+        val recyclerView = findViewById<RecyclerView>(R.id.rv_retrofit)
+        val manager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
         recyclerView.apply {
             layoutManager = manager
             adapter = adapterMain
