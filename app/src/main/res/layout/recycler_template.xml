@@ -9,7 +9,7 @@
     android:id="@+id/rv_body">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="180dp"
         app:cardCornerRadius="5dp">
 
