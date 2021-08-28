@@ -6,9 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 data class RetailPrice(
     @SerializedName("amount")
-    @Expose
-    val amount: Int,
+    val amount: Int?,
     @SerializedName("currencyCode")
-    @Expose
     val currencyCode: String
 )

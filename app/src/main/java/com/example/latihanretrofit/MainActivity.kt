@@ -3,12 +3,14 @@ package com.example.latihanretrofit
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.latihanretrofit.Api.RetrofitInstance
 //import com.example.latihanretrofit.Factory.MainViewModelFactory
 import com.example.latihanretrofit.Model.BookItem
 import com.example.latihanretrofit.Model.Books
+import com.example.latihanretrofit.model2.RomanceBooks
 //import com.example.latihanretrofit.Repo.Repository
 //import com.example.latihanretrofit.ViewModel.MainViewModel
 import retrofit2.Call
@@ -31,11 +33,12 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.rv_retrofit)
 
         recyclerView.apply {
-            manager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-            layoutManager = manager
+            layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
             adapter = adapterMain
+            setHasFixedSize(true)
         }
         JSONResponse()
+//        setupRecycler()
     }
 
     private fun JSONResponse() {
@@ -44,17 +47,17 @@ class MainActivity : AppCompatActivity() {
         call.enqueue(object : Callback<Books> {
                     override fun onResponse(call: Call<Books>, response: Response<Books>) {
 
-                        if (response.body() != null) {
+                        if (response.isSuccessful) {
                             Log.d("test", response.body()!!.toString())
-//                            val adapterMain = MainAdapter(this@MainActivity)
                             adapterMain.setData(response.body()!!.items)
-//                            setupRecycler()
                         }
+
 
                     }
 
                     override fun onFailure(call: Call<Books>, t: Throwable) {
-                        TODO("Not yet implemented")
+                        Toast.makeText(this@MainActivity, "Check your network connection", Toast.LENGTH_LONG).show()
+                        t.printStackTrace()
                     }
 
                 })
@@ -63,13 +66,10 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecycler() {
         val adapterMain = MainAdapter(this)
         val recyclerView = findViewById<RecyclerView>(R.id.rv_retrofit)
-        val manager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
         recyclerView.apply {
-            layoutManager = manager
+            layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
             adapter = adapterMain
             setHasFixedSize(true)
         }
-//        recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL , false)
-//        recycler.adapter(mainAdapter)
     }
 }

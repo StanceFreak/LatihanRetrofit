@@ -14,7 +14,7 @@ import com.example.latihanretrofit.Model.Item
 
 class MainAdapter(val context: Context): RecyclerView.Adapter<MainAdapter.HomeViewHolder>() {
 
-    private var data = emptyList<Item>()
+    private var data : List<Item>? = listOf()
 
     inner class HomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var image: ImageView
@@ -38,18 +38,27 @@ class MainAdapter(val context: Context): RecyclerView.Adapter<MainAdapter.HomeVi
     }
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        val bookData = data[position]
+        val bookData = data?.get(position)
         Glide.with(context)
-            .load(bookData.volumeInfo.imageLinks.thumbnail)
-            .into(holder.image)
+                .load(bookData!!.volumeInfo.imageLinks.thumbnail)
+                .into(holder.image)
         holder.title.text = bookData.volumeInfo.title
-        holder.author.text = bookData.volumeInfo.authors.toString()
-        holder.rating.rating = bookData.volumeInfo.averageRating.toFloat()
-        holder.price.text = String.format("Rp %,d", bookData.saleInfo.retailPrice.amount)
+        holder.author.text = bookData.volumeInfo.authors.toString().replace("""[\p{P}\p{S}&&[^.]]+""".toRegex(), "")
+        holder.rating.rating = bookData.volumeInfo.averageRating.toDouble().toFloat()
+//        holder.price.text = String.format("Free")
+
+
+        @Suppress("ConstantConditionIf")
+        if(bookData.saleInfo.retailPrice != null) {
+            holder.price.text = String.format("Rp %,d", bookData.saleInfo.retailPrice.amount)
+        }
+        else {
+            holder.price.text = String.format("Free")
+        }
     }
 
     override fun getItemCount(): Int {
-        return data.size
+        return data!!.size
     }
 
     fun setData(bookList: List<Item>) {

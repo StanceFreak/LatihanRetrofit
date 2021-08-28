@@ -7,7 +7,7 @@ data class VolumeInfo(
     @SerializedName("title")
     val title: String,
     @SerializedName("authors")
-    val authors: List<String>,
+    val authors: List<String>?,
     @SerializedName("publisher")
     val publisher: String,
     @SerializedName("publishedDate")
