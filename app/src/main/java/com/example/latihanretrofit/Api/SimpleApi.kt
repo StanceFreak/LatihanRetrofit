@@ -15,6 +15,6 @@ interface SimpleApi {
     fun getRomanceBooks(): Call<RomanceBooks>
 
     @GET("/books/v1/volumes?q=novel")
-    fun getBooks(): Call<Books>
+    suspend fun getBooks(): Call<Books>
     
 }
