@@ -10,5 +10,5 @@ data class Epub(
     @SerializedName("isAvailable")
     val isAvailable: Boolean,
     @SerializedName("acsTokenLink")
-    val acsTokenLink: String
+    val acsTokenLink: String?
 ) : Parcelable

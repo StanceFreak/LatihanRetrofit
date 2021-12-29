@@ -16,13 +16,13 @@ data class VolumeInfo(
     @SerializedName("publishedDate")
     val publishedDate: String,
     @SerializedName("description")
-    val description: String,
+    val description: String?,
     @SerializedName("industryIdentifiers")
     val industryIdentifiers: List<IndustryIdentifier>,
     @SerializedName("readingModes")
     val readingModes: ReadingModes,
     @SerializedName("pageCount")
-    val pageCount: Int,
+    val pageCount: Int?,
     @SerializedName("printType")
     val printType: String,
     @SerializedName("categories")
@@ -38,7 +38,7 @@ data class VolumeInfo(
     @SerializedName("contentVersion")
     val contentVersion: String,
     @SerializedName("panelizationSummary")
-    val panelizationSummary: PanelizationSummary,
+    val panelizationSummary: PanelizationSummary?,
     @SerializedName("imageLinks")
     val imageLinks: ImageLinks,
     @SerializedName("language")
@@ -50,5 +50,5 @@ data class VolumeInfo(
     @SerializedName("canonicalVolumeLink")
     val canonicalVolumeLink: String,
     @SerializedName("subtitle")
-    val subtitle: String
+    val subtitle: String?
 ) : Parcelable
