@@ -3,6 +3,7 @@ package com.example.latihanretrofit.Factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.latihanretrofit.Api.ApiHelper
+import com.example.latihanretrofit.Api.ApiService
 import com.example.latihanretrofit.Main.MainViewModel
 import com.example.latihanretrofit.Repo.MainRepository
 import java.lang.IllegalArgumentException
