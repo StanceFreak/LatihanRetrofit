@@ -15,27 +15,39 @@ import com.example.latihanretrofit.Factory.MainViewModelFactory
 import com.example.latihanretrofit.Utils.Status
 import com.example.latihanretrofit.databinding.ActivityMainBinding
 import com.example.latihanretrofit.model2.Item
-import com.example.latihanretrofit.model2.RomanceBooks
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import okhttp3.internal.concurrent.TaskRunner.Companion.logger
 
 class MainActivity : AppCompatActivity(), RatingBar.OnRatingBarChangeListener {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter: MainAdapter
+    private lateinit var mainAdapter: MainAdapter
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        setupViewModel()
-        setupRecycler()
+        mainAdapter = MainAdapter(this, arrayListOf())
+        binding.rvRetrofit.layoutManager = GridLayoutManager(this, 2)
+        binding.rvRetrofit.setHasFixedSize(true)
+        mainAdapter.notifyDataSetChanged()
+        binding.rvRetrofit.adapter = mainAdapter
+
+//        setupRecycler()
+        setupObservers()
 //        apiResponse()
-
+        setContentView(binding.root)
     }
+
+//    private fun setupRecycler() {
+//        mainAdapter = MainAdapter(this, arrayListOf())
+//
+//        binding.rvRetrofit.apply {
+//            adapter = mainAdapter
+//            layoutManager = GridLayoutManager(applicationContext, 2)
+//            setHasFixedSize(true)
+//        }
+//    }
 
     override fun onRatingChanged(RatingBar: RatingBar?, p1: Float, p2: Boolean) {
         TODO("Not yet implemented")
@@ -65,24 +77,21 @@ class MainActivity : AppCompatActivity(), RatingBar.OnRatingBarChangeListener {
 //                })
 //    }
 
-    private fun setupRecycler() {
+//    private fun setupViewModel() {
+//        viewModel = ViewModelProviders.of(
+//            this,
+//            MainViewModelFactory(ApiHelper(ApiBuilder.apiService))
+//        ).get(MainViewModel::class.java)
+//    }
 
-        adapter = MainAdapter(this)
-
-        binding.rvRetrofit.apply {
-            layoutManager = GridLayoutManager(this@MainActivity, 2)
-            setHasFixedSize(true)
-        }
-    }
-
-    private fun setupViewModel() {
-        viewModel = ViewModelProviders.of(
-            this,
-            MainViewModelFactory(ApiHelper(ApiBuilder.apiService))
-        ).get(MainViewModel::class.java)
-    }
-
+//    @Suppress("CAST_NEVER_SUCCEEDS")
     private fun setupObservers() {
+
+        viewModel = ViewModelProviders.of(
+                this,
+                MainViewModelFactory(ApiHelper(ApiBuilder.apiService))
+        ).get(MainViewModel::class.java)
+
         viewModel.getRomanceBooks(
             0,
             40
@@ -92,26 +101,27 @@ class MainActivity : AppCompatActivity(), RatingBar.OnRatingBarChangeListener {
                     Status.SUCCESS -> {
                         binding.rvRetrofit.visibility = View.VISIBLE
                         binding.progressBar.visibility = View.GONE
-                        resource.data?.let { item ->
-                            retrieveList(item as ArrayList<Item>)
+                        resource.data?.let { response ->
+                            mainAdapter.setData(response.items)
                         }
                     }
                     Status.ERROR -> {
-                        binding.rvRetrofit.visibility = View.VISIBLE
+//                        binding.rvRetrofit.visibility = View.VISIBLE
                         binding.progressBar.visibility = View.INVISIBLE
+                        Log.e("error", it.message.toString())
                         Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
                     }
                     Status.LOADING -> {
-                        binding.rvRetrofit.visibility = View.GONE
                         binding.progressBar.visibility = View.VISIBLE
+//                        binding.rvRetrofit.visibility = View.GONE
                     }
                 }
             }
         })
     }
 
-    private fun retrieveList(item: ArrayList<Item>) {
-        adapter.apply {
+    private fun retrieveList(item: List<Item>) {
+        mainAdapter.apply {
             setData(item)
             notifyDataSetChanged()
         }
@@ -141,10 +151,10 @@ class MainActivity : AppCompatActivity(), RatingBar.OnRatingBarChangeListener {
 //        })
 //    }
 //
-//    private fun retrieveData(bookList : List<Item>) {
-//        adapter.apply {
-//            setData(bookList)
-//            notifyDataSetChanged()
-//        }
-//    }
+    private fun retrieveData(bookList : List<Item>) {
+        mainAdapter.apply {
+            setData(bookList)
+            notifyDataSetChanged()
+        }
+    }
 }

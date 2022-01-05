@@ -17,9 +17,6 @@ import retrofit2.Response
 
 class MainViewModel(private val repository: MainRepository): ViewModel() {
 
-    val bookList = MutableLiveData<RomanceBooks>()
-    val error = MutableLiveData<String>()
-
     fun getRomanceBooks(
         startIndex : Int,
         maxResults : Int

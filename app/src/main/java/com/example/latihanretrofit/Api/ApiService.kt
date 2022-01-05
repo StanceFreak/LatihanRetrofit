@@ -12,6 +12,6 @@ interface ApiService {
     suspend fun getRomanceBooks(
         @Query("startIndex") startIndex: Int,
         @Query("maxResults") maxResults : Int
-    ): Response<RomanceBooks>
+    ): RomanceBooks
     
 }
